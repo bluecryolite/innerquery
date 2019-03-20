@@ -1,6 +1,6 @@
 ### ![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/icon.png) Inner Query 轻量的内部查询系统  
 
-![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/example.png)  
+
 #### 主要功能
 1. 可以查询多种类型的目标数据库，支持mysql、sqlserver、sqlite...
 2. 自定义sql查询,结果可以展示为表格、柱图、饼图、曲线图
@@ -35,4 +35,8 @@ select|性别|男:1,女:0
 
 *关于展示图形的SQL语句必须满足的条件
 必须是两列，第一列是统计项，第二列是统计数据  
+
+页面展示效果  
+![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/example.png)  
+
 
