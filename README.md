@@ -1,15 +1,16 @@
-### Inner Query 轻量的内部查询系统
+### ![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/icon.png) Inner Query 轻量的内部查询系统  
+
+![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/example.png)  
 #### 主要功能
-1. 部署时可以指定目标数据库，数据可以为mysql、sqlserver、sqlite...
+1. 可以查询多种类型的目标数据库，支持mysql、sqlserver、sqlite...
 2. 自定义sql查询,结果可以展示为表格、柱图、饼图、曲线图
 3. 自定义查询条件，查询条件可以为输入框和选择项
 4. 可以进行简单用户管理，权限分为管理员和普通操作人员
 
-#### 安装  
-支持python3.5+  
-$pip install pipenv  (已安装pipenv请忽略)    
+#### 安装
+$pip install pipenv  
 $pipenv install  
-如果要查询mssql数据库，额外执行    
+如果要使用mssql数据库，额外执行  
 $pipenv install pymssql  
 $pipenv shell  
 
@@ -19,9 +20,7 @@ $pipenv shell
 $flask run  
 
 访问localhost:5000
-默认用户名admin，密码admin  
-
-以上为开发环境的部署，如果要进行生产环境部署，请自行查阅相关部署方法以及修改innerquery下的settings.py文件  
+默认用户名admin，密码admin
 
 #### 查询定义
 ##### “sql内容”示例：   
@@ -36,5 +35,4 @@ select|性别|男:1,女:0
 
 *关于展示图形的SQL语句必须满足的条件
 必须是两列，第一列是统计项，第二列是统计数据  
-
 
