@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}
+  {{conditionname}}
+{% endblock title %}
+
+{% block extendscripts %}
+   {% for jsfile_name in script_list %}
+        <script src="{{ host }}/{{ jsfile_name }}.js"></script>
+   {% endfor %}
+{% endblock extendscripts %}
+
+{%block rightnav %}
+{% include 'main/_rightnav.html'%}
+{% endblock rightnav%}
+{%block message%}
+{%endblock message%}
+{% block content %}
+<div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          {% include 'main/_sidebar.html'%}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% include '_message.html'%}
+            <h2 class="sub-header">{{condition.qname}}</h2>
+            <div class="query-form">
+              {{formstr|safe}}
+            </div>
+            <div class="table-responsive">
+                {% include 'main/_queryresult.html'%}
+            </div>
+        </div>
+</div>
+{% endblock content %}
+{% block footer %}
+{% include 'main/_querymodal.html' %}
+{% endblock footer %}

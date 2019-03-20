@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://mirrors.aliyun.com/pypi/simple"
+verify_ssl = true
+
+[dev-packages]
+faker = "*"
+
+[packages]
+flask = "*"
+python-dotenv = "*"
+flask-sqlalchemy = "*"
+flask-login = "*"
+bootstrap-flask = "*"
+flask-wtf = "*"
+pymssql = "*"
+cython = "*"
+xlwt = "*"
+pyecharts = "*"
+pytest-runner = "*"
+
+[requires]
+python_version = "3.5"

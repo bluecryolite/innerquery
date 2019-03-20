@@ -1,0 +1,5 @@
+<ul class="nav nav-sidebar">
+   {% for query in queryconditions %}
+        <li><a href="{{url_for('.query',query_id=query.id) }}">{{query.qname}}</a></li>
+    {% endfor %}
+</ul>
