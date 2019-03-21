@@ -1,4 +1,4 @@
-### ![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/icon.png) Inner Query 轻量的内部查询系统  
+### ![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/icon.png) Inner Query 轻量的内部数据查询工具  
 
 
 #### 主要功能
