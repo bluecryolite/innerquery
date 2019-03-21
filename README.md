@@ -9,6 +9,7 @@
 
 #### 安装
 $pip install pipenv  
+$pipenv --three
 $pipenv install  
 如果要使用mssql数据库，额外执行  
 $pipenv install pymssql  
