@@ -42,15 +42,7 @@ def query(query_id):
                 return redirect(url_for('.index'))
         else: 
             if request.form.get('subquery',None)=='查询':
-                iscanquery = True
-                if paracount:
-                    params = []
-                    for i in range(paracount):
-                        if request.form.get('q_'+str(i)).strip() == '':
-                            iscanquery = False
-                            break
-                        params.append(request.form.get('q_'+str(i)))
-                    sqlstr = buildsql(sqlstr,params)
+                iscanquery,sqlstr = getsqlstr(sqlstr,paracount)
                 if iscanquery:
                     data = queryfromtarget(sqlstr)
                     jsdependencies,result = buildresult(condition.resulttype,data)
@@ -61,15 +53,7 @@ def query(query_id):
                 db.session.commit()
                 return redirect(url_for('.index'))
             if request.form.get('toexcel',None)=='生成EXCEL':
-                iscanquery = True
-                if paracount:
-                    params = []
-                    for i in range(paracount):
-                        if request.form.get('q_'+str(i)).strip() == '':
-                            iscanquery = False
-                            break
-                        params.append(request.form.get('q_'+str(i)))
-                    sqlstr = buildsql(sqlstr,params)
+                iscanquery,sqlstr = getsqlstr(sqlstr,paracount)
                 if iscanquery:
                     data = queryfromtarget(sqlstr)
                     filename = buildexcel(condition.qname,data[0],data[1])
@@ -101,6 +85,18 @@ def edtquery():
         abort(500)
     db.session.commit()
     return redirect(url_for('.query',query_id=condition.id))
+
+def getsqlstr(sqlstr,paracount=None):
+    iscanquery = True
+    if paracount:
+        params = []
+        for i in range(paracount):
+            if request.form.get('q_'+str(i)).strip() == '':
+                iscanquery = False
+                break
+            params.append(request.form.get('q_'+str(i)))
+    return iscanquery,buildsql(sqlstr,params)
+
 
 def submitqueryform(form):
     if not current_user.isadmin:
