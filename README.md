@@ -8,20 +8,26 @@
 4. 可以进行简单用户管理，权限分为管理员和普通操作人员
 
 #### 安装
-$pip install pipenv  
+支持python3.5+版本  
+
+$pip install pipenv（已安装pipenv请忽略)  
 $pipenv --three  
 $pipenv install  
-如果要使用mssql数据库，额外执行  
-$pipenv install pymssql  
 $pipenv shell  
-
-修改数据库连接
-修改innerquery目录下的settings.py文件，如果配置了MSSQL_TARGET节点，则目标数据库为mssql数据库，如果为其它数据库，在SQLALCHEMY_BINDS节点中配置key为target的节点，连接串参见flask-sqlachemy文档    
-
 $flask run  
 
-访问localhost:5000
-默认用户名admin，密码admin
+访问localhost:5000  
+默认用户名admin，密码admin  
+
+配置查询目标数据库连接  
+默认安装访问的查询数据库是otherdata.db,修改innerquery目录下的settings.py文件，指定你需要访问的目标数据库，
+在SQLALCHEMY_BINDS节点中配置key为target的节点，连接串参见flask-sqlachemy文档。  
+
+访问mssql数据库  
+配置MSSQL_TARGET节点，则查询目标数据库为mssql数据库    
+如果要使用mssql数据库，需要安装pymssql  
+$pipenv install pymssql  
+
 
 #### 查询定义
 ##### “sql内容”示例：   
