@@ -130,3 +130,4 @@ def __build_shape(shape, coldesc, outdata):
     print(coldesc)
 
     return shape.get_js_dependencies(), shape.render_embed()
+
