@@ -31,7 +31,7 @@ $pipenv install pymssql
 
 #### 查询定义
 ##### “sql内容”示例：   
-select name '用户名称',phone '电话' from user where name='{0} and sex={1}'  
+select name '用户名称',phone '电话' from user where name='{0}' and sex='{1}'  
 其中{0}、{1}表示条件占位符  
 
 
@@ -41,7 +41,14 @@ select|性别|男:1,女:0
 一行代表一个条件  
 
 *关于展示图形的SQL语句必须满足的条件
-必须是两列，第一列是统计项，第二列是统计数据  
+至少是两列，第一列是统计项，后续列是统计数据  
+饼图展示的是第一个统计数据（即第二列）  
+例如：  
+```sqlite
+select strftime('%Y%m', timestamp) 'date', count(1) 'total', count(distinct author_id) 'author'
+from comment
+group by strftime('%Y%m', timestamp)
+````
 
 页面展示效果  
 ![image](https://raw.githubusercontent.com/scaluo/innerquery/master/innerquery/static/images/example.png)  
