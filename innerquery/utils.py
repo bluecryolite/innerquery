@@ -1,23 +1,25 @@
 import os
 from functools import wraps
 import xlwt 
-from flask import current_app,abort
+from flask import current_app, abort
 from flask_wtf.csrf import generate_csrf
 from flask_login import current_user
-from pyecharts import Bar,Line,Pie
+from pyecharts import Bar, Line, Pie
 
-def buildsql(sql,params):
+
+def buildsql(sql, params):
     ret = sql
     if params:
         for i in range(len(params)):
-            ret = ret.replace('{'+str(i)+'}',params[i])
+            ret = ret.replace('{'+str(i)+'}', params[i])
     return ret
 
-def buildform(id,inparam=None):
+
+def buildform(id, inparam=None):
     formlist = []
     formlist.append('<form action="/query/'+str(id)+'" method="post" class="form">')
     formlist.append('<input type="hidden" name="csrf_token" value="'+generate_csrf()+'">')
-    paracount=0
+    paracount = 0
     if inparam:
         params = inparam.splitlines()
         paracount = len(params)
@@ -25,9 +27,9 @@ def buildform(id,inparam=None):
             param = params[i]
             eles = param.split('|')
             formlist.append('<div class="form-group required">')
-            elename="q_"+str(i)
+            elename = "q_"+str(i)
             formlist.append('<label class="form-control-label" for="'+elename+'">'+eles[1]+'</label>')
-            if eles[0] in ['text','date']:
+            if eles[0] in ['text', 'date']:
                 formlist.append('<input class="form-control" type="text" id="'+elename+'" name="'+elename+'" value="">')
             #  select 格式  select|name|elename:elevalue,elename:elevalue
             if eles[0] in ['select']:
@@ -44,20 +46,20 @@ def buildform(id,inparam=None):
         formlist.append('<input class="btn btn-danger" id="subdel" name="subdel" type="submit" onclick="return confirm(\'确认删除此查询?\');" value="删除此查询">')
     formlist.append('<input class="btn btn-success" id="toexcel" name="toexcel" type="submit"  value="生成EXCEL">')
     formlist.append('</form>')
-    return paracount,''.join(formlist)
+    return paracount, ''.join(formlist)
 
 
-
-def buildresult(resulttype,data):
-    coldesc,outdata = data[0],data[1]
-    buildmap = {0:buildtable,
-                1:buildbar,
-                2:buildline,
-                3:buildpie}
+def buildresult(resulttype, data):
+    coldesc, outdata = data[0], data[1]
+    buildmap = {0: buildtable,
+                1: buildbar,
+                2: buildline,
+                3: buildpie}
     func = buildmap[resulttype]
-    return func(coldesc,outdata)
+    return func(coldesc, outdata)
 
-def buildtable(coldesc,outdata):
+
+def buildtable(coldesc, outdata):
     tablelist = []
     tablelist.append('<table class="table table-striped">')
     
@@ -73,40 +75,36 @@ def buildtable(coldesc,outdata):
     tablelist.append('</tbody>')
 
     tablelist.append('</table>')
-    return [],''.join(tablelist)
+    return [], ''.join(tablelist)
 
 
-def buildbar(coldesc,outdata):
-    bar = Bar('')
-    bar.add(coldesc[1],[ele[0] for ele in outdata],[ele[1] for ele in outdata],is_label_show=True)
-    return bar.get_js_dependencies(),bar.render_embed()
+def buildbar(coldesc, outdata):
+    return __build_shape(Bar(''), coldesc, outdata)
 
-def buildline(coldesc,outdata):
-    line = Line('')
-    line.add(coldesc[1],[ele[0] for ele in outdata],[ele[1] for ele in outdata])
-    return line.get_js_dependencies(),line.render_embed()
 
-def buildpie(coldesc,outdata):
-    pie = Pie('')
-    pie.add('',[ele[0] for ele in outdata],[ele[1] for ele in outdata])
-    return pie.get_js_dependencies(),pie.render_embed()
+def buildline(coldesc, outdata):
+    return __build_shape(Line(''), coldesc, outdata)
 
-def buildexcel(name,coldesc,outdata):
+
+def buildpie(coldesc, outdata):
+    return __build_shape(Pie(''), coldesc, outdata)
+
+
+def buildexcel(name, coldesc, outdata):
     workbook = xlwt.Workbook()
-    sheet = workbook.add_sheet(name,cell_overwrite_ok=True)
+    sheet = workbook.add_sheet(name, cell_overwrite_ok=True)
     for i in range(len(coldesc)):
-        sheet.write(0,i,coldesc[i])
+        sheet.write(0, i, coldesc[i])
         print(coldesc[i])
     for i in range(len(outdata)):
         for j in range(len(outdata[i])):
-            sheet.write(i+1,j,u'%s'%str(outdata[i][j]))
-            #print(outdata[i][j])
-    filename ='toexcel.xls' 
-    workbook.save(os.path.join(current_app.config['EXCEL_DOWNLOAD_PATH'],filename))
+            sheet.write(i+1, j, u'%s' % str(outdata[i][j]))
+    filename = 'toexcel.xls'
+    workbook.save(os.path.join(current_app.config['EXCEL_DOWNLOAD_PATH'], filename))
     return filename
 
 
-#@admin_required decorator,create query,user manage is need
+# @admin_required decorator,create query,user manage is need
 def admin_required(func):
     def decorator(func):
         @wraps(func)
@@ -118,14 +116,17 @@ def admin_required(func):
     return decorator(func)
 
 
+def __build_shape(shape, coldesc, outdata):
+    count = 2
+    if not isinstance(shape, Pie):
+        count = len(coldesc)
 
+    for i in range(1, count):
+        if isinstance(shape, Bar):
+            shape.add(coldesc[i], [ele[0] for ele in outdata], [ele[i] for ele in outdata], is_label_show=True)
+        else:
+            shape.add(coldesc[i], [ele[0] for ele in outdata], [ele[i] for ele in outdata])
+    print(outdata)
+    print(coldesc)
 
-
-
-
-
-
-
-
-
-
+    return shape.get_js_dependencies(), shape.render_embed()
